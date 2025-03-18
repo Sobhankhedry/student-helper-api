@@ -1,0 +1,6 @@
+@SoftWare_Engineering_HostAddress = http://localhost:5012
+
+GET {{SoftWare_Engineering_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
