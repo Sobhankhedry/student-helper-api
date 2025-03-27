@@ -11,5 +11,6 @@ namespace SoftWare_Engineering.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<GetCourse> GetCourses { get; set; }
     }
 }

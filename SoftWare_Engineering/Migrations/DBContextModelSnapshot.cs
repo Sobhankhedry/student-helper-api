@@ -26,6 +26,9 @@ namespace SoftWare_Engineering.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Classroom")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CourseCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -71,6 +74,25 @@ namespace SoftWare_Engineering.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("SoftWare_Engineering.Models.GetCourse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CourseName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GetCourses");
                 });
 
             modelBuilder.Entity("SoftWare_Engineering.Models.User", b =>

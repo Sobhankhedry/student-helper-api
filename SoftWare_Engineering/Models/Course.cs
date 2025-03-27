@@ -17,5 +17,6 @@
         public string? MajorName { get; set; }
         public string? Status { get; set; }
         public string? FinalExam { get; set; }
+        public string? Classroom { get; set; }
     }
 }
