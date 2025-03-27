@@ -67,6 +67,22 @@ namespace SoftWare_Engineering.Controllers
             return Ok(courses);
         }
 
+        [HttpPost("Exam")]
+        public IActionResult GetExam([FromBody] ExamRequest request)
+        {
+            var courseNames = _dbContext.GetCourses
+                .Where(c => c.Username == request.Username)
+                .Select(c => c.CourseName)
+                .ToList();
+
+            var FullCourse = _dbContext.Courses
+                .Where(c => courseNames.Contains(c.CourseName.Trim().ToLower()) && c.UniversityName == request.University &&
+                c.MajorName == request.Major)
+                .ToList();
+            return Ok(FullCourse);
+        }
+
+
     }
 
 }
