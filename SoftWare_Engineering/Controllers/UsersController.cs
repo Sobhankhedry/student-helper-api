@@ -70,16 +70,30 @@ namespace SoftWare_Engineering.Controllers
         [HttpPost("Exam")]
         public IActionResult GetExam([FromBody] ExamRequest request)
         {
-            var courseNames = _dbContext.GetCourses
+            var user = _dbContext.Users.FirstOrDefault(x => x.userName == request.Username);
+            if (user.Role == "استاد")
+            {
+
+                var FullCourse = _dbContext.Courses
+                   .Where(c => c.ProfessorName == user.fullName && request.University == c.UniversityName && request.Major == c.MajorName)
+                   .ToList();
+
+                return Ok(FullCourse);
+            }
+            else
+            {
+                var courseNames = _dbContext.GetCourses
                 .Where(c => c.Username == request.Username)
                 .Select(c => c.CourseName)
                 .ToList();
 
-            var FullCourse = _dbContext.Courses
-                .Where(c => courseNames.Contains(c.CourseName.Trim().ToLower()) && c.UniversityName == request.University &&
-                c.MajorName == request.Major)
-                .ToList();
-            return Ok(FullCourse);
+                var FullCourse = _dbContext.Courses
+                    .Where(c => courseNames.Contains(c.CourseName.Trim().ToLower()) && c.UniversityName == request.University &&
+                    c.MajorName == request.Major)
+                    .ToList();
+                return Ok(FullCourse);
+            }
+            return Ok();
         }
 
 

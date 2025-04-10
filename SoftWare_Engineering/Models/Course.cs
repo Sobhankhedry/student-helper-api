@@ -18,5 +18,6 @@
         public string? Status { get; set; }
         public string? FinalExam { get; set; }
         public string? Classroom { get; set; }
+        public string? ExamHour { get; set; }
     }
 }
