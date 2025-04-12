@@ -29,7 +29,7 @@ namespace SoftWare_Engineering.Controllers
         [HttpPost("SignUp")]
         public IActionResult SignUp([FromBody] User user)
         {
-            var find = _dbContext.Users.FirstOrDefault(x => x.userName == user.userName);
+            var find = _dbContext.Users.FirstOrDefault(x => x.UserName == user.UserName);
             if (find != null)
             {
                 return BadRequest(".نام کاربری از قبل انتخاب شده است");
@@ -44,7 +44,7 @@ namespace SoftWare_Engineering.Controllers
         public IActionResult Login([FromBody] LoginRequest request)
         {
 
-            var find = _dbContext.Users.FirstOrDefault(x => x.userName == request.Email);
+            var find = _dbContext.Users.FirstOrDefault(x => x.UserName == request.Email);
             if (find == null)
             {
                 return NotFound(".کاربر پیدا نشد");
@@ -62,7 +62,7 @@ namespace SoftWare_Engineering.Controllers
         {
             var courses = _dbContext.Courses
                 .Where(c => c.UniversityName == request.University && c.MajorName == request.Major)
-                .ToList();
+            .ToList();
 
             return Ok(courses);
         }
@@ -70,12 +70,12 @@ namespace SoftWare_Engineering.Controllers
         [HttpPost("Exam")]
         public IActionResult GetExam([FromBody] ExamRequest request)
         {
-            var user = _dbContext.Users.FirstOrDefault(x => x.userName == request.Username);
+            var user = _dbContext.Users.FirstOrDefault(x => x.UserName == request.Username);
             if (user.Role == "استاد")
             {
 
                 var FullCourse = _dbContext.Courses
-                   .Where(c => c.ProfessorName == user.fullName && request.University == c.UniversityName && request.Major == c.MajorName)
+                   .Where(c => c.ProfessorName == user.FullName && request.University == c.UniversityName && request.Major == c.MajorName)
                    .ToList();
 
                 return Ok(FullCourse);
@@ -113,6 +113,16 @@ namespace SoftWare_Engineering.Controllers
             return Ok(FullCourse);
         }
 
+
+        [HttpPost("Course")]
+        public IActionResult GetCourses([FromBody] ScheduleRequest request)
+        {
+            var courses = _dbContext.Courses
+                .Where(c => c.UniversityName == request.University && c.MajorName == request.Major)
+            .ToList();
+
+            return Ok(courses);
+        }
 
     }
 
