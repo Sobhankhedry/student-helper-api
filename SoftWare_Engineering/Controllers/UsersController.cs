@@ -93,24 +93,36 @@ namespace SoftWare_Engineering.Controllers
                     .ToList();
                 return Ok(FullCourse);
             }
-            return Ok();
+
         }
 
 
 
         [HttpPost("Weekly")]
-        public IActionResult GetWeekly([FromBody] ExamRequest request)
+        public IActionResult GetWeekly([FromBody] WeeklyRequest request)
         {
-            var courseNames = _dbContext.GetCourses
+            if (request.Role == "دانشجو")
+            {
+                var courseNames = _dbContext.GetCourses
                 .Where(c => c.Username == request.Username)
                 .Select(c => c.CourseName)
                 .ToList();
 
-            var FullCourse = _dbContext.Courses
-                .Where(c => courseNames.Contains(c.CourseName.Trim().ToLower()) && c.UniversityName == request.University &&
-                c.MajorName == request.Major)
-                .ToList();
-            return Ok(FullCourse);
+                var FullCourse = _dbContext.Courses
+                    .Where(c => courseNames.Contains(c.CourseName.Trim().ToLower()) && c.UniversityName == request.University &&
+                    c.MajorName == request.Major)
+                    .ToList();
+                return Ok(FullCourse);
+            }
+            else
+            {
+                var user = _dbContext.Users.FirstOrDefault(x => x.UserName == request.Username);
+                var FullCourse = _dbContext.Courses
+                   .Where(c => c.ProfessorName == user.FullName && request.University == c.UniversityName && request.Major == c.MajorName)
+                   .ToList();
+                return Ok(FullCourse);
+            }
+
         }
 
 
@@ -120,7 +132,6 @@ namespace SoftWare_Engineering.Controllers
             var courses = _dbContext.Courses
                 .Where(c => c.UniversityName == request.University && c.MajorName == request.Major)
             .ToList();
-
             return Ok(courses);
         }
 
